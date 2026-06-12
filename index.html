@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عيد ميلاد سعيد يا روبان! 💖</title>
+    <style>
+        /* إعدادات الخطوط والخلفية */
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Reem+Kufi:wght@500&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffb3c6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px 0;
+        }
+
+        /* شاشة البداية الذكية لتشغيل الصوت فوراً */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffb3c6 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .welcome-box {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(228, 130, 153, 0.3);
+            max-width: 400px;
+            width: 85%;
+            animation: pulse 2s infinite;
+        }
+
+        .welcome-box h2 {
+            font-family: 'Reem Kufi', sans-serif;
+            color: #ff477e;
+            margin-bottom: 15px;
+        }
+
+        .welcome-box p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        /* الحاوية الرئيسية */
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px 20px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(228, 130, 153, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 550px;
+            width: 90%;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            z-index: 10;
+            transition: all 0.5s ease;
+            display: none; /* مخفية حتى تضغط على شاشة الاستقبال */
+        }
+
+        h1 {
+            font-family: 'Reem Kufi', sans-serif;
+            color: #ff477e;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.05rem;
+            margin-bottom: 25px;
+        }
+
+        /* إطار الصورة الذكي المتغير */
+        .image-wrapper {
+            width: 100%;
+            max-height: 600px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+            border: 4px solid white;
+            background-color: #f8f9fa;
+        }
+
+        .couple-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        /* العداد التنازلي */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .time-box {
+            background: #ff7096;
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            min-width: 75px;
+            box-shadow: 0 5px 12px rgba(255, 112, 150, 0.3);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .time-box label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        /* رسالة المفاجأة والزر */
+        .celebration-card {
+            display: none;
+            animation: fadeIn 1.5s ease-in-out forwards;
+        }
+
+        /* زر تشغيل المفاجأة الثانية */
+        .magic-btn {
+            background: linear-gradient(45deg, #ff477e, #ff7096);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.3rem;
+            font-family: 'Cairo', sans-serif;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 71, 126, 0.4);
+            margin: 20px 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .magic-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 71, 126, 0.6);
+        }
+
+        .main-gift-content {
+            display: none; /* يظهر بعد ضغط الزر التاني يوم 11 */
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        .age-badge {
+            background: #ff477e;
+            color: white;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .love-message {
+            font-size: 1.25rem;
+            color: #4a4a4a;
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+
+        /* تأثيرات القلوب المتساقطة */
+        .heart {
+            position: fixed;
+            top: -50px;
+            color: #ff477e;
+            pointer-events: none;
+            animation: fall linear forwards;
+            z-index: 100;
+        }
+
+        /* الأنيمايشن */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcome-screen" class="welcome-overlay" onclick="initSite()">
+        <div class="welcome-box">
+            <h2>اضغطي هنا يا ملكتي 💖💖</h2>
+            <p>هناك مفاجأة بانتظاركِ داخل الرابط...</p>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="main-container" class="container">
+        
+        <div class="image-wrapper">
+            <img id="dynamic-image" class="couple-image" src="image1.jpg" alt="روبان">
+        </div>
+
+        <div id="countdown-section">
+            <h1 >كل ثانية بتقربنا لليوم اللي نورتي فيه الدنيا..💖</h1>
+            <P class="subtitle">العد التنازلي لعيد ميلاد روبان </P>
+            <!-- <h1>العد التنازلي لعيد ميلاد روبان 💖</h1>
+            <p class="subtitle">كل ثانية بتقربنا لليوم اللي نورتي فيه الدنيا..</p> -->
+            <div class="countdown">
+                <div class="time-box"><span id="days">00</span><label>أيام</label></div>
+                <div class="time-box"><span id="hours">00</span><label>ساعات</label></div>
+                <div class="time-box"><span id="minutes">00</span><label>دقائق</label></div>
+                <div class="time-box"><span id="seconds">00</span><label>ثواني</label></div>
+            </div>
+        </div>
+
+        <div id="celebration-section" class="celebration-card">
+            
+            <button id="activate-btn" class="magic-btn" onclick="startTheMagic()">اضغطي لرؤية التهنئة 🎂✨</button>
+
+            <div id="main-gift" class="main-gift-content">
+                <div class="age-badge">الـ 23 سنة 🎉</div>
+                <h1>عيد ميلاد سعيد يا أحلى روبان في الدنيا! 🎂💖</h1>
+                <p class="love-message">
+                    كل سنة وأنتِ منورة حياتي، وكل سنة وأنتِ خطيبتي وحبيبتي وملكتي.. <br>
+                    العمر كله ليكي في سعادة ونجاح، ويارب السنين الجاية كلها نكون سوا ونحقق كل اللي بنتمناه. 💍✨
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // تاريخ عيد الميلاد (11 يوليو 2026)
+        const birthdayDate = new Date(2026, 5, 16, 0, 0, 0).getTime();
+
+        const countdownSection = document.getElementById('countdown-section');
+        const celebrationSection = document.getElementById('celebration-section');
+        const dynamicImage = document.getElementById('dynamic-image');
+        const music = document.getElementById('bg-music');
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const mainContainer = document.getElementById('main-container');
+
+        const preBirthdayImage = "image1.jpg"; 
+        const birthdayImage = "image2.jpg";    
+
+        // دالة تشغيل الموقع والأغنية معاً فور الضغط على الشاشة الافتتاحية
+        function initSite() {
+            // إخفاء شاشة الاستقبال وإظهار محتوى الموقع
+            welcomeScreen.style.opacity = '0';
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+                mainContainer.style.display = 'block';
+                mainContainer.style.animation = 'fadeIn 1s ease-in-out forwards';
+            }, 500);
+
+            // 🌟 الخدعة البرمجية: إجبار الأغنية على البدء من الثانية 20 فوراً
+            music.currentTime = 23;
+
+            // تشغيل الأغنية فوراً
+            music.play().catch(error => console.log("خطأ في تشغيل الصوت:", error));
+            
+            // بدء تشغيل العداد
+            startCountdown();
+        }
+
+        function startCountdown() {
+            const timer = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = birthdayDate - now;
+
+                // عند انتهاء العداد ووصول يوم الاحتفال
+                if (distance <= 0) {
+                    clearInterval(timer);
+                    countdownSection.style.display = 'none'; 
+                    dynamicImage.src = birthdayImage;       
+                    celebrationSection.style.display = 'block'; 
+                    return;
+                }
+
+                // حساب الوقت المتبقي
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // عرض العداد
+                document.getElementById('days').innerHTML = String(days).padStart(2, '0');
+                document.getElementById('hours').innerHTML = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerHTML = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerHTML = String(seconds).padStart(2, '0');
+
+            }, 1000);
+        }
+
+        // الدالة السحرية للتهنئة النهائية وتأثيرات القلوب
+        function startTheMagic() {
+            document.getElementById('activate-btn').style.display = 'none';
+            document.getElementById('main-gift').style.display = 'block';
+            setInterval(createHeart, 300);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            const shapes = ['❤️', '💖', '🎈', '🌸', '✨', '🎉'];
+            heart.innerText = shapes[Math.floor(Math.random() * shapes.length)];
+            
+            heart.style.left = Math.random() * 95 + 'vw'; 
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+    </script>
+</body>
+</html>
